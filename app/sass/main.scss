@@ -1,3 +1,7 @@
+label{
+
+}
+
 
 h1,h2,h3{
   margin: 0;
@@ -25,8 +29,9 @@ h1,h2,h3{
 
 .main{
   position: relative;
-
 }
+
+
 
 .item{
   position: relative;
@@ -38,9 +43,7 @@ h1,h2,h3{
       display: inline-block;
       width: 100%;
       height: 100px;
-
     }
-
 }
 .item-description{
   display: block;
