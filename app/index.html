@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link rel="stylesheet" href="vendors/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="vendors/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+</head>
+<body>
+
+
+<div class="main">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m6 l6 offset-l3 items-list" id="items-list"></div>
+            <div class="col s12 m6 l6 offset-l3 invisible creator" id="creator">
+                <h2>Creator</h2>
+                <form class="col s12">
+                    <div class="row">
+                        <div class="input-field col s12">
+                                <input  id="create-title" type="text" class="validate">
+                                <label for="create-title">Title</label>
+                            </div>
+
+                            <div class="input-field col s12">
+                                <input id="create-image-link"  type="text" class="validate">
+                                <label for="create-image-link">Your Image Link</label>
+                            </div>
+
+                            <div class="input-field col s12">
+                                <textarea id="create-description" class="materialize-textarea"></textarea>
+                                <label for="create-description">Description Here</label>
+                            </div>
+                    </div>
+                    <button class="btn waves-effect waves-light left" type="button" name="action" onclick="openCloseCreator()">Close
+                        <i class="material-icons right"></i>
+                    </button>
+                    <button class="btn waves-effect waves-light right" type="button" name="action" onclick="createNewItem()">Submit
+                        <i class="material-icons right"></i>
+                    </button>
+                </form>
+            </div>
+            <div class="col s12 m6 l6 offset-l3 invisible editor" id="editor">
+                <h2>Editor</h2>
+                <form class="col s12">
+                    <div class="row">
+
+                        <div class="input-field col s12">
+                            <input  id="edit-title" type="text" class="validate">
+                            <label for="edit-title">Title</label>
+                        </div>
+
+                        <div class="input-field col s12">
+                            <input id="edit-image-link"  type="text" class="validate">
+                            <label for="edit-image-link">Your Image Link</label>
+                        </div>
+
+                        <div class="input-field col s12">
+                            <textarea id="edit-description" class="materialize-textarea"></textarea>
+                            <label for="edit-description">Description Here</label>
+                        </div>
+
+                    </div>
+                    <button class="btn waves-effect waves-light right" type="button" name="action" onclick="submitEdit()">Submit
+                        <i class="material-icons right"></i>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <div class="col s12 m12 l12  invisible popup-container" id="popup-container">
+        <div class="col s12 m6 l4 offset-l3 grey lighten-5 z-depth-1  popup" id="popup">
+            <a href="#" class="close-modal" onclick="closeModal()">X</a>
+            <div class="col s12 m12 l12">
+                <div class="image-container"><img id="image-here" src=""></div>
+                <div class="content-container">
+                    <h3 id="title-here"></h3>
+                    <p id="description-here"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="btn-floating btn-large waves-effect waves-light red" id="addBtn"><i class="material-icons" onclick="openCloseCreator()">+</i></a>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
