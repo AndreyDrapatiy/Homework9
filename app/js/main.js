@@ -1,9 +1,9 @@
-var keys =[];  // тут хранятся все ключи от item, по которым мы будем искать их контент(Заголовок, картинку и описание)
-                // сюда записываються сразу после загрузки из storage/и сюда добавляются все новые, которые потом запишуться в storage
+var keys = [];  // тут хранятся все ключи от item, по которым мы будем искать их контент(Заголовок, картинку и описание)
+// сюда записываються сразу после загрузки из storage/и сюда добавляются все новые, которые потом запишуться в storage
 var returnAllKeys = JSON.parse(localStorage.getItem('allKeys')); // получаем все ключи которые уже есть в Storage и парсим
 
-function getKeysAfterReload()  {   //пополняем массив keys из хранилища ключами если они там были
-    if(returnAllKeys !== null){   //Что бы не было ошибки Can not read property of null
+function getKeysAfterReload() {   //пополняем массив keys из хранилища ключами если они там были
+    if (returnAllKeys !== null) {   //Что бы не было ошибки Can not read property of null
         for (var i = 0; i < returnAllKeys.length; i++) {
             keys.unshift(returnAllKeys[i]);
         }
@@ -17,31 +17,30 @@ window.onload = function () {
 };
 
 
-
 function getItems() {   // берем ранее полученый ключ от записи.
                         // По нему находим соответсвующую запись в storage
                         // наполняем страницу из storage циклом
 
-    if(returnAllKeys !== null){  //Что бы не было ошибки Can not read property of null
+    if (returnAllKeys !== null) {  //Что бы не было ошибки Can not read property of null
         for (var i = 0; i < returnAllKeys.length; i++) {
 
             var thisItem = JSON.parse(localStorage.getItem(returnAllKeys[i]));
 
-            var  newItemTitle = thisItem['title'];
-            var  newItemImage = thisItem['image'];
-            var  newItemDescription = thisItem['description'];
+            var newItemTitle = thisItem['title'];
+            var newItemImage = thisItem['image'];
+            var newItemDescription = thisItem['description'];
 
-            var template  = '<div class="col s12 card-panel grey lighten-5 z-depth-1 item"' + ' id="'+ newItemTitle +'">'+
-                '<div class="col s4">'+ '<img' + ' src="'+ newItemImage +'">'+ '</div>'+
-                '<div class="col s8">'+
-                '<h2 class="item-title" id="item-title">'+ newItemTitle +'</h2>'+
-                '<p class="item-description">'+ newItemDescription +'</p>'+
-                '</div>'+
+            var template = '<div class="col s12 card-panel grey lighten-5 z-depth-1 item"' + ' id="' + newItemTitle + '">' +
+                '<div class="col s4">' + '<img' + ' src="' + newItemImage + '">' + '</div>' +
+                '<div class="col s8">' +
+                '<h2 class="item-title" id="item-title">' + newItemTitle + '</h2>' +
+                '<p class="item-description">' + newItemDescription + '</p>' +
+                '</div>' +
                 '<div class="right">' +
                 '<button class="btn waves-effect waves-light" onclick="openModal(this.parentNode.parentNode.id)">More...</button>' +
-                '<button class="btn waves-effect waves-light" onclick="removeItem(this, this.parentNode.parentNode.id)">Remove</button>'+
-                '<button class="btn waves-effect waves-light" onclick="startEdit(this,this.parentNode.parentNode.id)">Edit</button>'+
-                '</div>'+
+                '<button class="btn waves-effect waves-light" onclick="removeItem(this, this.parentNode.parentNode.id)">Remove</button>' +
+                '<button class="btn waves-effect waves-light" onclick="startEdit(this,this.parentNode.parentNode.id)">Edit</button>' +
+                '</div>' +
                 '</div>';
 
             document.getElementById('items-list').innerHTML += template;
@@ -59,9 +58,9 @@ function createNewItem() {
     var key = title;    //ключ для поиска контента равен заголовку записи, передаем его в keys, который потом запищем в storage
                         //по нему мы потом найдем и саму запись и ее контент
     var obj = {
-        title : title,
-        image : image,
-        description : description
+        title: title,
+        image: image,
+        description: description
     };
 
     var serialObj = JSON.stringify(obj); //сериализуем обьект
@@ -89,12 +88,12 @@ function createNewItem() {
 }
 
 
-
 function openCloseCreator() {
     document.getElementById('items-list').classList.toggle('invisible');
     document.getElementById('creator').classList.toggle('invisible');
     document.getElementById('addBtn').classList.toggle('invisible');
 }
+
 function openCloseEditor() {
     document.getElementById('items-list').classList.toggle('invisible');
     document.getElementById('addBtn').classList.toggle('invisible');
@@ -111,21 +110,19 @@ function removeItem(thisElem, parentId) {
     var getAllKeysFromStorage = JSON.parse(localStorage.getItem('allKeys')); //получаем из Storage масив ключей, парсим  из строки в массив
     console.log(getAllKeysFromStorage);
     for (var i = 0; i < getAllKeysFromStorage.length; i++) { //идем по масиву с ключами
-       if (getAllKeysFromStorage[i] === parentId){            //и если мы нашли ключ(id/title) к удаляемому айтему, удаляем его из масива
-           getAllKeysFromStorage.splice(i, 1);
-           var serialise = JSON.stringify(getAllKeysFromStorage); //преобразовываем массив обратно в строку
-           localStorage.setItem('allKeys', serialise);          // и записываем обратно в storage
-       }
+        if (getAllKeysFromStorage[i] === parentId) {            //и если мы нашли ключ(id/title) к удаляемому айтему, удаляем его из масива
+            getAllKeysFromStorage.splice(i, 1);
+            var serialise = JSON.stringify(getAllKeysFromStorage); //преобразовываем массив обратно в строку
+            localStorage.setItem('allKeys', serialise);          // и записываем обратно в storage
+        }
     }
 
     for (var j = 0; j < keys.length; j++) { //удаляем из временного массива keys
-        if (keys[j] === parentId){
+        if (keys[j] === parentId) {
             keys.splice(j, 1);
         }
     }
 }
-
-
 
 
 function openModal(parentId) {
@@ -138,12 +135,12 @@ function openModal(parentId) {
     var description = thisElemInStorage.description;
 
 
-
     document.getElementById('title-here').innerHTML = title;          // вставляем контент в dom модального окна
     document.getElementById('image-here').setAttribute('src', image);
     document.getElementById('description-here').innerHTML = description;
 
 }
+
 function closeModal() {
     document.getElementById('popup-container').classList.toggle('invisible');      // закрываем модальное окно
 }
@@ -158,11 +155,11 @@ function startEdit(thisElem, parentId) {
     var image = thisElemInStorage.image;
     var description = thisElemInStorage.description;
 
-   document.getElementById('edit-title').value = title;
-   document.getElementById('edit-image-link').value = image;
-   document.getElementById('edit-description').value = description;
+    document.getElementById('edit-title').value = title;
+    document.getElementById('edit-image-link').value = image;
+    document.getElementById('edit-description').value = description;
 
-   removeItem(thisElem, parentId)
+    removeItem(thisElem, parentId)
 
 }
 
@@ -175,9 +172,9 @@ function submitEdit() {
     var key = title;
 
     var obj = {
-        title : title,
-        image : image,
-        description : description
+        title: title,
+        image: image,
+        description: description
     };
 
     var serialObj = JSON.stringify(obj);
