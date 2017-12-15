@@ -21,6 +21,9 @@
 .idea/uiDesigner.xml
 
 .idea/
+.DS_Store
+app/.DS_Store
+
 
 # Gradle:
 .idea/gradle.xml
