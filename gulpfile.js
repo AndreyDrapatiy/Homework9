@@ -1,79 +1,51 @@
-'use strict';
+const gulp = require('gulp');
+const concat = require('gulp-concat');
+const rename = require('gulp-rename');
+const sass = require('gulp-sass');
+const minifyCss = require('gulp-minify-css');
+const sourcemaps = require('gulp-sourcemaps');
+const babelify = require('babelify');
+const browserify = require('browserify');
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
+const plumber = require('gulp-plumber');
+const uglify = require('gulp-uglify');
 
-// var
-var gulp = require('gulp'),
-    // concat = require('gulp-concat'),
-    sass = require('gulp-sass'),
-    
-    rename = require("gulp-rename"),
-    notify = require("gulp-notify"),
-    autoprefixer = require('gulp-autoprefixer'),
-    livereload = require('gulp-livereload'),
-    connect = require('gulp-connect'),
-    useref = require('gulp-useref'),
-    sourcemaps = require('gulp-sourcemaps'),
-    wiredep = require('wiredep').stream;
+gulp.task('default', ['styles', 'scripts']);
+gulp.task('build', ['styles', 'scripts']);
+gulp.task('styles', function (done) {
+  gulp.src('./style/style.scss')
+    .pipe(sourcemaps.init())
+    .pipe(sass({
+      errLogToConsole: true
+    }))
+    .pipe(minifyCss({
+      keepSpecialComments: 0
+    }))
+    .pipe(rename({extname: '.min.css'}))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('./dist'))
+    .on('end', done)
 
-gulp.task('bower', function () {
-    gulp.src('./app/index.html')
-        .pipe(wiredep({
-            directory: "vendors"
-        }))
-        .pipe(gulp.dest('./app'));
 });
 
-// server connect
-gulp.task('connect', function() {
-    connect.server({
-        root: 'app',
-        livereload: true
-    });
+gulp.task('scripts', function () {
+  return browserify('./script/main.js')
+    .transform(babelify.configure({
+      presets: ['es2015']
+    }))
+    .bundle()
+    .pipe(source('./script/main.js'))
+    .pipe(buffer())
+    .pipe(plumber())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(concat('main.min.js'))
+    .pipe(uglify())
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('./dist'))
 });
 
-// html
-gulp.task('html', function() {
-    return gulp.src('app/index.html')
-        .pipe(connect.reload());
+gulp.task('watch', ['default'], function () {
+  gulp.watch(['./style/**/*.scss'], ['styles']);
+  gulp.watch(['./script/**/*.js'], ['scripts'])
 });
-
-// css
-gulp.task('css', function() {
-    return gulp.src('app/sass/main.scss')
-        .pipe(autoprefixer('last 5 versions'))
-        .pipe(sass().on('error', sass.logError))
-        .pipe(sourcemaps.init())
-        .pipe(sourcemaps.write())
-        .pipe(rename('main.css'))
-        .pipe(gulp.dest('app/css/'))
-        .pipe(notify("Done!"))
-        .pipe(connect.reload());
-});
-
-// watch
-gulp.task('watch', function() {
-    gulp.watch('app/sass/**/*.scss', ['css'])
-    gulp.watch('app/css/*.css', ['css'])
-    gulp.watch('app/index.html', ['html'])
-});
-
-// default
-gulp.task('default', ['connect', 'html', 'css', 'watch']);
-
-// build
-gulp.task('useref', function() {
-    return gulp.src('app/*.html')
-        .pipe(useref())
-        .pipe(gulp.dest('dist'));
-});
-
-//img and fontss
-gulp.task('fonts:build', function() {
-    return gulp.src('app/fonts/**/*.*')
-        .pipe(gulp.dest('dist/fonts/'))
-});
-gulp.task('img:build', function() {
-    return gulp.src('app/img/**/*.*')
-        .pipe(gulp.dest('dist/img/'))
-});
-
-gulp.task('build', ['useref', 'fonts:build', 'img:build']);

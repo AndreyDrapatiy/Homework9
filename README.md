@@ -7,3 +7,9 @@ Build project with gulp (build and watch), minify files and concatenate them. Al
 - Button for removing article
 - Button for editing article with prefilled data
 - Data should be stored in localStorage (and edited as well)
+
+npm i
+
+npm run build
+
+npm run watch

@@ -118,3 +118,6 @@ bower_components
 
 
 # End of https://www.gitignore.io/api/php,phpstorm,node,bower
+
+dist/
+node_modules/
